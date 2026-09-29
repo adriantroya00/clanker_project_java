@@ -32,5 +32,63 @@ public class Dice {
         return generator.nextFloat() * MAX_STRENGTH;
     }
 
+    public boolean resurrectPlayer(){
+        return (generator.nextFloat()<RESURRECT_PROB);
+    }
+
+    public int weaponsReward(){
+        return generator.nextInt(WEAPONS_REWARD);
+    }
+
+    public int shieldsReward(){
+        return generator.nextInt(SHIELDS_REWARD);
+    }
+
+    public int healthReward(){
+        return generator.nextInt(HEALTH_REWARD);
+    }
+
+    public float weaponPower(){
+        return generator.nextFloat() * MAX_ATTACK;
+    }
+
+    public float shieldPower(){
+        return generator.nextFloat() * MAX_SHIELD;
+    }
+
+    public int usesLeft(){
+        return generator.nextInt(MAX_USES);
+    }
+
+    public float intensity(float competence){
+        return generator.nextFloat() * competence;
+    }
+
+    public boolean discardElement(int usesLeft){
+        if(generator.nextInt(MAX_USES)>=usesLeft){
+            return true;
+        } else {
+            return false;
+        }
+        
+        /*
+            Segun el pdf parece algo asi
+
+            int uses = generator.nextInt(MAX_USES);
+            if(uses == MAX_USES){
+                return false;
+            }
+            if(uses == 0){
+                return true;
+            }
+
+            if(generator.nextInt(MAX_USES)>=usesLeft){
+                return true;
+            } else {
+                return false;
+            }
+         */
+    }
+    
 
 }
