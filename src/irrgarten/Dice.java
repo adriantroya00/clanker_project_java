@@ -1,6 +1,5 @@
 package irrgarten;
 import java.util.Random;
-import java.util.random;
 
 
 
@@ -26,10 +25,12 @@ public class Dice {
     }
 
     public float randomIntelligence(){
-        return generator.nextFloat(this.MAX_INTELLIGENCE);
+        return generator.nextFloat() * MAX_INTELLIGENCE ;
     }
 
     public float randomStrength(){
-        return generator.nextFloat(MAX_STRENGTH);
+        return generator.nextFloat() * MAX_STRENGTH;
     }
+
+
 }
