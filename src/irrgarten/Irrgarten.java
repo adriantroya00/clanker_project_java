@@ -15,7 +15,7 @@ public class Irrgarten {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        prueba1
+        hola
     }
     
 }
