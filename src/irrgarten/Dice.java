@@ -85,7 +85,7 @@ public class Dice {
      * @return valor aleatorio en intervalo [0, MAX_ATTACK]
      */
     public static float weaponPower(){
-        return generator.nextFloat(MAX_ATTACK);
+        return generator.nextFloat() * MAX_ATTACK;
     }
 
     /**
@@ -93,7 +93,7 @@ public class Dice {
      * @return valor aleatorio en intervalo [0, MAX_SHIELD]
      */
     public static float shieldPower(){
-        return generator.nextFloat(MAX_SHIELD);
+        return generator.nextFloat() * MAX_SHIELD;
     }
 
     /**
@@ -145,5 +145,4 @@ public class Dice {
          */
     }
     
-
 }
