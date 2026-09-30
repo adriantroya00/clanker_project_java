@@ -49,11 +49,11 @@ public class Dice {
     }
 
     public static float weaponPower(){
-        return generator.nextFloat(MAX_ATTACK);
+        return generator.nextFloat() * MAX_ATTACK;
     }
 
     public static float shieldPower(){
-        return generator.nextFloat(MAX_SHIELD);
+        return generator.nextFloat() * MAX_SHIELD;
     }
 
     public static int usesLeft(){
@@ -91,5 +91,4 @@ public class Dice {
          */
     }
     
-
 }
