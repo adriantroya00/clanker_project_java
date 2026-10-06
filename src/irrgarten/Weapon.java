@@ -25,6 +25,10 @@ public class Weapon {
         return Dice.discardElement(uses);
     }
 
+    public void reduceUses() {
+        uses = uses--;
+    }
+
 
 
 }
