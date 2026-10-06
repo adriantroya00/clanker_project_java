@@ -1,5 +1,8 @@
 package irrgarten;
 
+/**
+ * @authors Alvaro Perez Sanchez y Adrian Hernando Leal 
+ */
 public class Weapon {
     private float power;
     private int uses;

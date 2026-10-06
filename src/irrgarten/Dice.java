@@ -1,7 +1,9 @@
 package irrgarten;
 import java.util.Random;
 
-
+/**
+ * @authors Alvaro Perez Sanchez y Adrian Hernando Leal 
+ */
 public class Dice {
     private static final int MAX_USES = 5; // Numero maximo de usos de armas y escudos
     private static final float MAX_INTELLIGENCE = 10.0f; // Valor maximo para la inteligencia de jugadores y monstruos

@@ -1,5 +1,8 @@
 package irrgarten;
 
+/**
+ * @authors Alvaro Perez Sanchez y Adrian Hernando Leal 
+ */
 public class Shield {
     private float protection;
     private int uses;

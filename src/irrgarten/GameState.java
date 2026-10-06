@@ -1,5 +1,8 @@
 package irrgarten;
 
+/**
+ * @authors Alvaro Perez Sanchez y Adrian Hernando Leal 
+ */
 public class GameState {
     private static String labyrinth;
     private static String players;

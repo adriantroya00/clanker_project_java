@@ -5,8 +5,7 @@
 package irrgarten;
 
 /**
- *
- * @author ACER NITRO
+ * @authors Alvaro Perez Sanchez y Adrian Hernando Leal 
  */
 public class Irrgarten {
 
