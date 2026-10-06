@@ -1,9 +1,14 @@
 package irrgarten;
+import java.util.Random;
+
+
 
 /**
  * @authors Alvaro Perez Sanchez y Adrian Hernando Leal 
  */
 public class TestP1 {
+
+    private static final Random generator = new Random();
     public static void main(String[] args) {
     
         // ======================================================
@@ -146,13 +151,29 @@ public class TestP1 {
             System.out.println("Poder Escudo: " + Dice.shieldPower());
         }
 
+        //usesLeft
+        for (int i = 0 ; i < 100 ; i++){
+            System.out.println("------- " + i + " -------");
+            System.out.println("El objeto empezara con: " + Dice.usesLeft() + " usos");
+        }
+
+        //intensity
+        for (int i = 0 ; i < 100 ; i++){
+            System.out.println("------- " + i + " -------");
+            System.out.println("Se usara una intensidad de: " + Dice.intensity(5) + " usos");
+        }
+
+        //discardElement
+        int discard_count = 0;
+    
+        for (int i = 0 ; i < 10000 ; i++){
+            if(Dice.discardElement(0))
+                discard_count++;
+        }
+
+        System.out.println("Veces descartado: " + discard_count);
+
         */
-
-        
-
-        
-
-
         
 
     }

@@ -121,9 +121,9 @@ public class Dice {
      */
     public static boolean discardElement(int usesLeft){
         if(generator.nextInt(MAX_USES)>=usesLeft){
-            return false;
-        } else {
             return true;
+        } else {
+            return false;
         }
 
         //5 usos = 100% falso
