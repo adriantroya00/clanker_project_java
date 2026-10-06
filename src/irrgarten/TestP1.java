@@ -82,8 +82,27 @@ public class TestP1 {
         System.out.println("La orientacion es: " + ori);
         System.out.println("El personaje es un: " + gc);
 
+        System.out.println("Todas las direcciones: ");
+        for (Directions d : Directions.values()){
+            System.out.println("La direccion es: " + d);
+        }
+
+        System.out.println("Todas las orientaciones: ");
+        for (Orientation o : Orientation.values()){
+            System.out.println("La direccion es: " + o);
+        }
+
+        System.out.println("Todos los tipos de personajes: ");
+        for (GameCharacter c : GameCharacter.values()){
+            System.out.println("La direccion es: " + c);
+        }
 
 
+        // ======================================================
+        // 5. Pruebas Dice
+        // ======================================================
+
+        
 
 
 
