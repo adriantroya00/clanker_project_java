@@ -105,7 +105,6 @@ public class Dice {
     }
 
     /**
-     * 
      * @param competence
      * @return cantidad competencia aplicada (valor aleatorio entre [0, competence])
      */
@@ -114,35 +113,19 @@ public class Dice {
     }
 
     /**
-     * 
+     * @brief Al usar un arma o escudo comprobamos si se descartara el objeto.
      * @param usesLeft usos restantes del arma/escudo
      * @return true con una probabilidad inversamente proporcional a lo cercano que esté el parametro del número máximo de usos que puede tener un arma/escudo
      */
     public static boolean discardElement(int usesLeft){
         if(generator.nextInt(MAX_USES)>=usesLeft){
-            return true;
-        } else {
             return false;
+        } else {
+            return true;
         }
-        
-        /*
-            Segun el pdf parece algo asi
 
-            int uses = generator.nextInt(MAX_USES);
-            if(uses == MAX_USES){
-                return false;
-            }
-            if(uses == 0){
-                return true;
-            }
-
-            if(generator.nextInt(MAX_USES)>=usesLeft){
-                return true;
-            } else {
-                return false;
-            }
-            quitar esto!!
-         */
+        //5 usos = 100% falso
+        //4 usos = 80% falso y 20% true
     }
     
 }
