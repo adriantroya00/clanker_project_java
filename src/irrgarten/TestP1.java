@@ -10,6 +10,9 @@ public class TestP1 {
         // 1. Prueba Weapon
         // ======================================================
 
+        /*          QUITAR
+        
+        
         System.out.println("===== PRUEBAS ESPADA =====");
 
         Weapon espada = new Weapon(5,5);
@@ -97,13 +100,57 @@ public class TestP1 {
             System.out.println("La direccion es: " + c);
         }
 
+        
 
         // ======================================================
         // 5. Pruebas Dice
         // ======================================================
 
+        System.out.println("===== PRUEBAS ENUMERADOS (100 pruebas por metodo)=====");
+
+        // randomPos
+        System.out.println("Direccion aleatoria (randomPos): " + Dice.randomPos(5));
+
+        // whoStarts
+        for (int i = 0 ; i < 100 ; i++)
+        System.out.println("Empieza el jugador: " + Dice.whoStarts(3));
+        
+        // randomIntelligence y randomStrength
+        for (int i = 0 ; i < 100 ; i++){
+            System.out.println("Inteligencia: " + Dice.randomIntelligence());
+            System.out.println("Fuerza: " + Dice.randomStrength());
+        }
+       
         
 
+        //resurrectPlayer
+        int resurrect_count = 0;
+        for (int i = 0 ; i < 100 ; i++){
+            if(Dice.resurrectPlayer())
+                resurrect_count++;
+        }
+        System.out.println("Veces resucitadas: " + resurrect_count);
+
+        // weapon, shield y health Reward
+        for (int i = 0 ; i < 100 ; i++){
+            System.out.println("------- " + i + " -------");
+            System.out.println("Armas: " + Dice.weaponsReward());
+            System.out.println("Escudos: " + Dice.shieldsReward());
+            System.out.println("Vida: " + Dice.healthReward());
+        }
+
+        // weapon y shield Power
+        for (int i = 0 ; i < 100 ; i++){
+            System.out.println("------- " + i + " -------");
+            System.out.println("Poder Arma: " + Dice.weaponPower());
+            System.out.println("Poder Escudo: " + Dice.shieldPower());
+        }
+
+        */
+
+        
+
+        
 
 
         
