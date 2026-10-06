@@ -14,10 +14,6 @@ public class TestP1 {
         // ======================================================
         // 1. Prueba Weapon
         // ======================================================
-
-        /*          QUITAR
-        
-        
         System.out.println("===== PRUEBAS ESPADA =====");
 
         Weapon espada = new Weapon(5,5);
@@ -173,7 +169,7 @@ public class TestP1 {
 
         System.out.println("Veces descartado: " + discard_count);
 
-        */
+        
         
 
     }
