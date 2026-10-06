@@ -132,7 +132,7 @@ public class TestP1 {
         }
         System.out.println("Veces resucitadas: " + resurrect_count);
 
-        // weapon, shield y health Reward
+        // weaponReward, shieldReward y healthReward 
         for (int i = 0 ; i < 100 ; i++){
             System.out.println("------- " + i + " -------");
             System.out.println("Armas: " + Dice.weaponsReward());
@@ -140,7 +140,7 @@ public class TestP1 {
             System.out.println("Vida: " + Dice.healthReward());
         }
 
-        // weapon y shield Power
+        // weaponPower y shieldPower
         for (int i = 0 ; i < 100 ; i++){
             System.out.println("------- " + i + " -------");
             System.out.println("Poder Arma: " + Dice.weaponPower());
