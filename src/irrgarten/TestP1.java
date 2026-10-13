@@ -23,10 +23,10 @@ public class TestP1 {
         do {
             System.out.println("La espada ataca con " + espada.attack());
 
-            if(espada.discard()){
+            if(!espada.discard()){
                 System.out.println("NO se ha descartado la espada");
                 System.out.println(espada.toString());
-                espada.usesLeft--;
+            
 
             } else {
                 System.out.println("SI se ha descartado la espada");
@@ -47,11 +47,10 @@ public class TestP1 {
         do {
             System.out.println("El escudo defiende con " + escudo.protect());
 
-            if(escudo.discard()){
+            if(!escudo.discard()){
                 
                 System.out.println("NO se ha descartado el escudo");
                 System.out.println(escudo.toString());
-                escudo.usesLeft--;
 
             } else {
                 System.out.println("SI se ha descartado el escudo");

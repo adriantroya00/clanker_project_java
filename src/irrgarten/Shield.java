@@ -13,11 +13,11 @@ public class Shield {
         }
 
         public float protect(){
-            if(this.uses>0){
+            if(uses>0){
                 uses--;
                 return protection;
             }
-            return 0f;
+            return 0;
         }
 
         public String toString(){
