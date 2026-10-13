@@ -26,6 +26,7 @@ public class TestP1 {
             if(espada.discard()){
                 System.out.println("NO se ha descartado la espada");
                 System.out.println(espada.toString());
+                espada.usesLeft--;
 
             } else {
                 System.out.println("SI se ha descartado la espada");
@@ -50,6 +51,7 @@ public class TestP1 {
                 
                 System.out.println("NO se ha descartado el escudo");
                 System.out.println(escudo.toString());
+                escudo.usesLeft--;
 
             } else {
                 System.out.println("SI se ha descartado el escudo");
