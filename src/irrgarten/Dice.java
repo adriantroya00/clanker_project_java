@@ -1,6 +1,5 @@
 package irrgarten;
 import java.util.Random;
-
 /**
  * @authors Alvaro Perez Sanchez y Adrian Hernando Leal 
  */
