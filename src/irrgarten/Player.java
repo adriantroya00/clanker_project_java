@@ -28,29 +28,42 @@ public class Player {
     }
 
     public void setPos(int row, int col) {
-    this.row = row;
-    this.col = col;
+        this.row = row;
+        this.col = col;
     }
 
     public boolean dead() {
         return(this.health <= 0);
     }
 
+    //public Directions move(Directions direction, Directions[] validMoves){}
+
     public float attack() {
-        return this.getStrength() + this.sumWeapons();
+        return this.strength + this.sumWeapons();
     }
 
-    public boolean defend() {
-        return this.manageHit();
+    public boolean defend( float receivedAttack ) {
+        return this.manageHit(receivedAttack);
     }
+
+    public void receiveReward(){}
 
     public String toString() {
-         return "Jugador{" + 
-          "'"+ super.toString() + 
-          ", Impactos consecutivos=" + this.consecutiveHits + 
-          ", Armas=" + this.weapons + 
-          ", Escudos=" + this.shields + "}\n";
+        return "Jugador {" + 
+                "\n Nombre = " + this.name +
+                "\n Numero = " + this.number +
+                "\n Inteligencia = " + this.intelligence + 
+                "\n Fuerza = " + this.strength + 
+                "\n Vida = " + this.health + 
+                "\n Fila = " + this.row + 
+                "\n Columna = " + this.col +
+                "\n Hits Consecutivos = " + this.consecutiveHits +
+                "\n}\n";
     }
+
+    private void receiveWeapon(Weapon w){}
+
+    private void receiveShield(Shield s){}
 
     private Weapon newWeapon() {
         return new Weapon(Dice.weaponPower(), Dice.usesLeft());
@@ -61,13 +74,16 @@ public class Player {
     }
 
     private float defensiveEnergy() {
-        return this.getIntelligence() + this.sumShields();
+        return this.intelligence + this.sumShields();
     }
 
+
+    //private boolean manageHit( float receivedAttack ) {}
+    
     private void resetHits() {
         this.consecutiveHits = 0;
     }
-
+    
     private void gotWounded() {
         this.health = this.health - 1;
     }
@@ -90,7 +106,7 @@ public class Player {
         float sumTotal = 0.0f;
         for (Shield shield : this.shields) {
             if (shield != null) {
-                sumTotal += shield.defend();
+                sumTotal += shield.protect();
             }
         }
         return sumTotal;
