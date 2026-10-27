@@ -19,6 +19,7 @@ public class Player {
 
     private ArrayList<Weapon> weapons;
     private ArrayList<Shield> shields;
+    private 
 
     public void resurrect() {
         this.weapons.clear();
