@@ -1,12 +1,32 @@
 package irrgarten;
+import java.util.ArrayList;
 
 public class Game {
     private static final int MAX_ROUNDS = 10 ;
     private int currentPlayerIndex ;
     private String log ;
+    private ArrayList<Player> jugadores;
+    private ArrayList<Monster> monstruos;
+    private Labyrinth laberinto;
 
-    public Game(int nplayers){
 
+
+
+    public Game(int nplayers, int nmonstruos ){
+        this.jugadores = new ArrayList<>();
+        this.monstruos = new ArrayList<>();
+        this.laberinto = new Labyrinth();
+        this.configureLabyrinth();
+
+        for(int i = 0 ; i < nplayers ; i++){
+            char a = 0;
+            this.jugadores.add(new Player(a));
+            a++;
+        }
+        this.currentPlayerIndex = Dice.whoStarts(nplayers);
+        //this.currentPlayer = this.jugadores(get(this.currentPlayerIndex)) 
+
+        //no sabemos q es log
     }
 
     public boolean finished(){

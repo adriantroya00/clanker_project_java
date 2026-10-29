@@ -10,6 +10,30 @@ public class Monster {
     private int row;
     private int col;
     
+    public Monster( String _name , float _intelligence , float _strength , float _health , int _row , int _col ){
+        this.name = _name;
+        this.intelligence = _intelligence;
+        this.strength = _strength;
+        this.health = _health;
+        this.row = _row;
+        this.col = _col;
+    }
+
+    public Monster(String _name , float _health , int _row , int _col ){
+        this.name = _name;
+        this.intelligence = Dice.randomIntelligence();
+        this.strength = Dice.randomStrength();
+        this.health = _health;
+        this.row = _row;
+        this.col = _col;
+
+    }
+
+    public Monster( int _row , int _col ){
+        this.row = _row;
+        this.col = _col;
+    }
+
     public boolean dead() {
         return(this.health <= 0.0f);
     }

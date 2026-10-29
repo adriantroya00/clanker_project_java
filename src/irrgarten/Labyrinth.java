@@ -7,7 +7,7 @@ public class Labyrinth {
             BLOCK_CHAR = 'X',
             EMPTY_CHAR = '-',
             MONSTER_CHAR = 'M',
-            COMBAT_CHAR = 'C',
+            COMBAT_CHAR = 'C', //tiene a la vez monstruo y jugador
             EXIT_CHAR = 'E';
 
     private static final int 
@@ -50,6 +50,7 @@ public class Labyrinth {
     public void addMonster(int row, int col, Monster monster) {
         if (posOK(row, col) && emptyPos(row, col)) {
             monsters[row][col] = monster;
+            map[row][col] = 'M';
         }
     }
 
@@ -75,7 +76,7 @@ public class Labyrinth {
     }
 
     private boolean monsterPos(int row, int col) {
-        return (monsters[row][col] != null);
+        return (map[row][col] == MONSTER_CHAR)
     }
 
     private boolean exitPos(int row, int col) {
@@ -84,7 +85,7 @@ public class Labyrinth {
     }
 
     private boolean combatPos(int row, int col) {
-        return (monsters[row][col] != null && players[row][col] != null);
+        return (map[row][col] == COMBAT_CHAR);
     }
 
     private boolean canStepOn(int row, int col) {

@@ -19,7 +19,12 @@ public class Player {
 
     private ArrayList<Weapon> weapons;
     private ArrayList<Shield> shields;
-    private 
+    
+    //el nombre se debe inicializar como Player#numero
+    public Player( char _number){
+        this.number = _number;
+        this.name = "Player#"+this.number;
+    }
 
     public void resurrect() {
         this.weapons.clear();
