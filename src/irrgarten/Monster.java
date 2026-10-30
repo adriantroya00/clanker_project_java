@@ -10,28 +10,20 @@ public class Monster {
     private int row;
     private int col;
     
-    public Monster( String _name , float _intelligence , float _strength , float _health , int _row , int _col ){
+    //todo definido
+    public Monster( String _name , float _intelligence , float _strength){
         this.name = _name;
         this.intelligence = _intelligence;
         this.strength = _strength;
-        this.health = _health;
-        this.row = _row;
-        this.col = _col;
+        this.health = INITIAL_HEALTH;
     }
 
-    public Monster(String _name , float _health , int _row , int _col ){
+    //random intelligence y strength
+    public Monster(String _name , float _health ){
         this.name = _name;
         this.intelligence = Dice.randomIntelligence();
         this.strength = Dice.randomStrength();
-        this.health = _health;
-        this.row = _row;
-        this.col = _col;
-
-    }
-
-    public Monster( int _row , int _col ){
-        this.row = _row;
-        this.col = _col;
+        this.health = INITIAL_HEALTH;
     }
 
     public boolean dead() {

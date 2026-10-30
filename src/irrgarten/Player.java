@@ -24,6 +24,9 @@ public class Player {
     public Player( char _number){
         this.number = _number;
         this.name = "Player#"+this.number;
+        this.intelligence = Dice.randomIntelligence();
+        this.strength = Dice.randomStrength();
+        this.health = INITIAL_HEALTH;
     }
 
     public void resurrect() {
@@ -52,7 +55,9 @@ public class Player {
         return this.manageHit(receivedAttack);
     }
 
-    public void receiveReward(){}
+    public void receiveReward(){
+                throw new UnsupportedOperationException();
+    }
 
     public String toString() {
         return "Jugador {" + 
@@ -82,9 +87,10 @@ public class Player {
     private float defensiveEnergy() {
         return this.intelligence + this.sumShields();
     }
-
-
-    //private boolean manageHit( float receivedAttack ) {}
+    
+    private boolean manageHit(float receivedAttack){
+        throw new UnsupportedOperationException();
+    }
     
     private void resetHits() {
         this.consecutiveHits = 0;
@@ -117,7 +123,6 @@ public class Player {
         }
         return sumTotal;
     }
-
 
 
 }
