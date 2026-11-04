@@ -74,7 +74,7 @@ public class Game {
         String playersStr = players.toString();
         String monstersStr = monsters.toString();
 
-        return new GameState(monstersStr, labyrinthStr, playersStr, currentPlayerIndex, finished(), log);
+        return new GameState(labyrinthStr, playersStr, monstersStr, currentPlayerIndex, finished(), log);
     }
 
     private void configureLabyrinth(){
