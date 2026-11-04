@@ -1,6 +1,7 @@
 package irrgarten;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class Player {
 
@@ -41,11 +42,32 @@ public class Player {
         this.col = col;
     }
 
+    public int getRow() {
+        return this.row;
+    }
+
+    public int getCol() {
+        return this.col;
+    }
+
+    public char getNumber() {
+        return this.number; 
+    }
+
     public boolean dead() {
         return(this.health <= 0);
     }
 
-    //public Directions move(Directions direction, Directions[] validMoves){}
+    public Directions move(Directions direction, ArrayList<Directions> validMoves){
+        int size = validMoves.size(); 
+        boolean contained = validMoves.contains(direction);
+
+        if (size > 0 && !contained) {
+            return validMoves.get(0);
+        } else {
+            return direction;
+        }
+    }
 
     public float attack() {
         return this.strength + this.sumWeapons();
@@ -56,7 +78,21 @@ public class Player {
     }
 
     public void receiveReward(){
-                throw new UnsupportedOperationException();
+        int wReward = Dice.weaponsReward();
+        int sReward = Dice.shieldsReward();
+
+        for (int i = 1; i <= wReward; i++) {
+            Weapon wnew = this.newWeapon();
+            this.receiveWeapon(wnew);
+        }
+
+        for (int i = 1; i <= sReward; i++) {
+            Shield snew = this.newShield();
+            this.receiveShield(snew);
+        }
+
+        int extraHealth = Dice.healthReward();
+        this.health += extraHealth;
     }
 
     public String toString() {
@@ -72,9 +108,43 @@ public class Player {
                 "\n}\n";
     }
 
-    private void receiveWeapon(Weapon w){}
+    private void receiveWeapon(Weapon w){
+        Iterator<Weapon> iterator = weapons.iterator();
 
-    private void receiveShield(Shield s){}
+        while (iterator.hasNext()) {
+            Weapon wi = iterator.next();
+            boolean discard = wi.discard();
+
+            if (discard) {
+                iterator.remove();
+            }
+        }
+
+        int size = weapons.size();
+
+        if (size < MAX_WEAPONS) {
+            weapons.add(w);
+        } 
+    }
+
+    private void receiveShield(Shield s){
+        Iterator<Shield> iterator = shields.iterator();
+        
+        while (iterator.hasNext()) {
+            Shield si = iterator.next();
+            boolean discard = si.discard();
+
+            if (discard) {
+                iterator.remove();
+            }
+        }
+
+        int size = shields.size();
+
+        if (size < MAX_SHIELDS) {
+            shields.add(s);
+        }
+    }
 
     private Weapon newWeapon() {
         return new Weapon(Dice.weaponPower(), Dice.usesLeft());
@@ -89,7 +159,25 @@ public class Player {
     }
     
     private boolean manageHit(float receivedAttack){
-        throw new UnsupportedOperationException();
+        float defense = this.defensiveEnergy();
+
+        if (defense < receivedAttack) {
+            this.gotWounded();
+            this.incConsecutiveHits();
+        } else {
+            this.resetHits();
+        }
+
+        boolean lose;
+        
+        if ((consecutiveHits == HITS2LOSE) || (dead())) {
+            this.resetHits();
+            lose = true;
+        } else {
+            lose = false;
+        }
+
+        return lose;
     }
     
     private void resetHits() {
