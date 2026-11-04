@@ -30,7 +30,7 @@ public class Game {
         
 
         this.configureLabyrinth();
-        //this.labyrinth.spreadPlayers(players); // este metodo es el que reparte los players (se queda así ya que no esta creado todavia)
+        this.labyrinth.spreadPlayers(players);
     }
 
     public boolean finished(){
@@ -102,7 +102,7 @@ public class Game {
         int currentRow = currentPlayer.getRow();
         int currentCol = currentPlayer.getCol();
 
-        Directions[] validMoves = labyrinth.validMoves(currentRow, currentCol);
+        ArrayList<Directions> validMoves = labyrinth.validMoves(currentRow, currentCol);
 
         Directions output = currentPlayer.move(preferredDirection, validMoves);
 

@@ -57,7 +57,7 @@ public class Player {
     public boolean dead() {
         return(this.health <= 0);
     }
-
+                                               
     public Directions move(Directions direction, ArrayList<Directions> validMoves){
         int size = validMoves.size(); 
         boolean contained = validMoves.contains(direction);
@@ -109,14 +109,11 @@ public class Player {
     }
 
     private void receiveWeapon(Weapon w){
-        Iterator<Weapon> iterator = weapons.iterator();
-
-        while (iterator.hasNext()) {
-            Weapon wi = iterator.next();
+        for (Weapon wi : weapons) {
             boolean discard = wi.discard();
 
             if (discard) {
-                iterator.remove();
+                weapons.remove(wi);
             }
         }
 
@@ -127,15 +124,12 @@ public class Player {
         } 
     }
 
-    private void receiveShield(Shield s){
-        Iterator<Shield> iterator = shields.iterator();
-        
-        while (iterator.hasNext()) {
-            Shield si = iterator.next();
+    private void receiveShield(Shield s){ 
+        for (Shield si : shields) {
             boolean discard = si.discard();
 
             if (discard) {
-                iterator.remove();
+               shields.remove(si);
             }
         }
 

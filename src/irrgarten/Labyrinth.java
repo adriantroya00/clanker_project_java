@@ -31,7 +31,7 @@ public class Labyrinth {
         this.exitCol = _exitCol;
     }
 
-    public void spreadPlayers(Player[] players) {
+    public void spreadPlayers(ArrayList<Player> players) {
         for (Player p : players) {
             int[] pos = randomEmptyPos();
             putPlayer2D(-1, -1, pos[ROW], pos[COL], p);
@@ -92,31 +92,32 @@ public class Labyrinth {
         }
     }
 
-    public Directions[] validMoves(int row, int col) {
+
+    public ArrayList<Directions> validMoves(int row, int col) {
         ArrayList<Directions> output = new ArrayList<>();
 
         if (canStepOn(row + 1, col)) {
             output.add(Directions.DOWN);
         }
 
-        if (canStepOn(row + 1, col)) {
+        if (canStepOn(row - 1, col)) {
             output.add(Directions.UP);
         }
 
-        if (canStepOn(row + 1, col)) {
+        if (canStepOn(row, col + 1)) {
             output.add(Directions.RIGHT);
         }
 
-        if (canStepOn(row + 1, col)) {
+        if (canStepOn(row, col - 1)) {
             output.add(Directions.LEFT);
         }
 
-        return output.toArray(new Directions[0]);
+        return output;
     }
 
     private boolean posOK(int row, int col) {
-        return (0 <= row && row <= this.nRows &&
-                0 <= col && col <= this.nCols);
+        return (0 <= row && row < this.nRows &&
+                0 <= col && col < this.nCols);
     }
 
     private boolean emptyPos(int row, int col) {
