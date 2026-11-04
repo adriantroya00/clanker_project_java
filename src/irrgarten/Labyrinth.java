@@ -43,12 +43,15 @@ public class Labyrinth {
     }
 
     public String toString() {
-        return "Laberinto {" +
-                "\n Numero de Filas = " + this.nRows +
-                "\n Numero de Columnas = " + this.nCols +
-                "\n Fila de salida = " + this.exitRow +
-                "\n Columna de salida = " + this.exitCol +
-                "\n}\n";
+        String s = " Laberinto {\n";
+        for(int i = 0 ; i < nRows ; i++){
+            for(int j = 0 ; j <nCols ; j++){
+                s += labyrinth[i][j];
+            }
+            s += "\n";
+        }
+
+        return s + "}\n";
     }
 
     public void addMonster(int row, int col, Monster monster) {
