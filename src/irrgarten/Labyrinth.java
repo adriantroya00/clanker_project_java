@@ -51,7 +51,7 @@ public class Labyrinth {
     public void addMonster(int row, int col, Monster monster) {
         if (posOK(row, col) && emptyPos(row, col)) {
             monsters[row][col] = monster;
-            labyrinth[row][col] = 'M';
+            labyrinth[row][col] = MONSTER_CHAR;
             monster.setPos(row, col);
         }
     }

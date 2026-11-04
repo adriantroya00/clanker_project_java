@@ -15,17 +15,21 @@ public class Game {
 
     public Game(int nplayers, int nmonsters ){
         this.players = new ArrayList<>();
-        this.monsters = new ArrayList<>();
-        labyrinth = new Labyrinth(5, 5, 4, 4);
-        this.log = "";
 
         for(int i = 0 ; i < nplayers ; i++){
             char a = 0;
             this.players.add(new Player(a));
             a++;
         }
+        
         this.currentPlayerIndex = Dice.whoStarts(nplayers);
         this.currentPlayer = this.players.get(this.currentPlayerIndex);
+
+        this.monsters = new ArrayList<>();
+        labyrinth = new Labyrinth(5, 5, 4, 4);
+        this.log = "";
+
+        
 
         this.configureLabyrinth();
         //this.labyrinth.spreadPlayers(players); // este metodo es el que reparte los players (se queda así ya que no esta creado todavia)
@@ -64,7 +68,7 @@ public class Game {
     }
 
     private void nextPlayer(){
-        currentPlayerIndex++;
+        currentPlayerIndex = (currentPlayerIndex+1)%players.size();
         currentPlayer = players.get(currentPlayerIndex);
     }
 
