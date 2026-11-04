@@ -28,6 +28,8 @@ public class Player {
         this.intelligence = Dice.randomIntelligence();
         this.strength = Dice.randomStrength();
         this.health = INITIAL_HEALTH;
+        this.weapons = new ArrayList<>();
+        this.shields = new ArrayList<>();
     }
 
     public void resurrect() {
@@ -109,33 +111,29 @@ public class Player {
     }
 
     private void receiveWeapon(Weapon w){
-        for (Weapon wi : weapons) {
-            boolean discard = wi.discard();
-
-            if (discard) {
-                weapons.remove(wi);
+        Iterator<Weapon> it = weapons.iterator();
+        while (it.hasNext()) {
+            Weapon wi = it.next();
+            if (wi.discard()) {
+                it.remove();   // borra el elemento actual de forma segura
             }
         }
 
-        int size = weapons.size();
-
-        if (size < MAX_WEAPONS) {
+        if (weapons.size() < MAX_WEAPONS) {
             weapons.add(w);
-        } 
+        }
     }
 
     private void receiveShield(Shield s){ 
-        for (Shield si : shields) {
-            boolean discard = si.discard();
-
-            if (discard) {
-               shields.remove(si);
+        Iterator<Shield> it = shields.iterator();
+        while (it.hasNext()) {
+            Shield si = it.next();
+            if (si.discard()) {
+                it.remove();
             }
         }
 
-        int size = shields.size();
-
-        if (size < MAX_SHIELDS) {
+        if (shields.size() < MAX_SHIELDS) {
             shields.add(s);
         }
     }

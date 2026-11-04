@@ -4,12 +4,12 @@ package irrgarten;
  * @authors Alvaro Perez Sanchez y Adrian Hernando Leal 
  */
 public class GameState {
-    private static String labyrinth;
-    private static String players;
-    private static String monsters;
-    private static int currentPlayer;
-    private static boolean winner;
-    private static String log;
+    private String labyrinth;
+    private String players;
+    private String monsters;
+    private int currentPlayer;
+    private boolean winner;
+    private String log;
 
     /**
      * @brief Constructor para inicializar la clase con todos sus parametros
@@ -32,42 +32,42 @@ public class GameState {
     /**
      * @return String de labyrinth
      */
-    public static String getLabyrinth() {
+    public String getLabyrinth() {
         return labyrinth;
     }
 
     /**
      * @return String de players
      */
-    public static String getPlayers() {
+    public String getPlayers() {
         return players;
     }
 
     /**
      * @return Getter de monsters
      */
-    public static String getMonsters() {
+    public String getMonsters() {
         return monsters;
     }
 
     /**
      * @return int indice de currentPlayer
      */
-    public static int getCurrentPlayer() {
+    public int getCurrentPlayer() {
         return currentPlayer;
     }
 
     /**
      * @return boolean si el jugador es el ganador
      */
-    public static boolean isWinner() {
+    public boolean isWinner() {
         return winner;
     }
 
     /**
      * @return String del log
      */
-    public static String getLog() {
+    public String getLog() {
         return log;
     }
 

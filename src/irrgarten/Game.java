@@ -13,11 +13,10 @@ public class Game {
     
     public Game(int nplayers, int nmonsters ){
         this.players = new ArrayList<>();
-
         for(int i = 0 ; i < nplayers ; i++){
-            char a = 0;
-            this.players.add(new Player(a));
-            a++;
+            //para hacer de i un char hacemos ((char)('0+i))
+            this.players.add(new Player((char)('0'+i)));
+            
         }
         
         this.currentPlayerIndex = Dice.whoStarts(nplayers);
@@ -149,7 +148,7 @@ public class Game {
     private void manageResurrection(){
         boolean resurrect = Dice.resurrectPlayer();
 
-        if (resurrect = true) {
+        if (resurrect) {
             currentPlayer.resurrect();
             logResurrected();
         } else {

@@ -20,15 +20,27 @@ public class Labyrinth {
             exitRow,
             exitCol;
 
-    private char[][] labyrinth = new char[nRows][nCols];
-    private Monster[][] monsters = new Monster[nRows][nCols];
-    private Player[][] players = new Player[nRows][nCols];
+    private char[][] labyrinth;
+    private Monster[][] monsters;
+    private Player[][] players;
 
     public Labyrinth(int _nRows, int _nCols, int _exitRow, int _exitCol) {
         this.nRows = _nRows;
         this.nCols = _nCols;
         this.exitRow = _exitRow;
         this.exitCol = _exitCol;
+
+        this.labyrinth = new char[nRows][nCols];
+        this.monsters = new Monster[nRows][nCols];
+        this.players = new Player[nRows][nCols];
+
+        for( int i = 0 ; i < nRows ; i++){
+            for( int j = 0; j < nCols ; j++){
+                labyrinth[i][j] = EMPTY_CHAR;
+            }
+        }
+        
+        labyrinth[exitRow][exitCol] = EXIT_CHAR;
     }
 
     public void spreadPlayers(ArrayList<Player> players) {
@@ -95,7 +107,6 @@ public class Labyrinth {
         }
     }
 
-
     public ArrayList<Directions> validMoves(int row, int col) {
         ArrayList<Directions> output = new ArrayList<>();
 
@@ -142,9 +153,9 @@ public class Labyrinth {
 
     private boolean canStepOn(int row, int col) {
         return (posOK(row, col) &&
-                monsterPos(row, col) ||
+                (monsterPos(row, col) ||
                 exitPos(row, col) ||
-                emptyPos(row, col));
+                emptyPos(row, col)));
     }
 
     private void updateOldPos(int row, int col) {
