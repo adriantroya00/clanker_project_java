@@ -4,6 +4,10 @@
  */
 package irrgarten;
 
+import irrgarten.Game;
+import irrgarten.UI.TextUI;
+import irrgarten.controller.Controller;
+
 /**
  * @authors Alvaro Perez Sanchez y Adrian Hernando Leal 
  */
@@ -13,7 +17,9 @@ public class Irrgarten {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
-    }
+        TextUI view = new TextUI();
+        Game game = new Game(2,2);
+        Controller controller = new Controller(game, view);
+        controller.play();    }
     
 }

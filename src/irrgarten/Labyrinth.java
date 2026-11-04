@@ -143,7 +143,6 @@ public class Labyrinth {
     }
 
     private boolean exitPos(int row, int col) {
-        // return (row == exitRow && col == exitCol);
         return (labyrinth[row][col] == EXIT_CHAR);
     }
 
@@ -220,18 +219,18 @@ public class Labyrinth {
                 }
             }
         
-        boolean monsterPos = monsterPos(row, col);
+            boolean monsterPos = monsterPos(row, col);
 
-        if (monsterPos) {
-            labyrinth[row][col] = COMBAT_CHAR;
-            output = monsters[row][col];
-        } else {
-            char number = player.getNumber();
-            labyrinth[row][col] = number;
-        }
+            if (monsterPos) {
+                labyrinth[row][col] = COMBAT_CHAR;
+                output = monsters[row][col];
+            } else {
+                char number = player.getNumber();
+                labyrinth[row][col] = number;
+            }
 
-        players[row][col] = player;
-        player.setPos(row, col);
+            players[row][col] = player;
+            player.setPos(row, col);
         }
 
         return output;
