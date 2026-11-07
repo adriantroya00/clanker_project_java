@@ -62,7 +62,7 @@ public class Dice {
      * @return cantidad de armas que recibe el jugador al ganar el combate (sera un numero entre 0 (incluido) y el máximo)
      */
     public static int weaponsReward(){
-        return generator.nextInt(WEAPONS_REWARD);
+        return generator.nextInt(WEAPONS_REWARD + 1);
     }
 
     /**
@@ -70,7 +70,7 @@ public class Dice {
      * @return cantidad de escudos que recibe el jugador al ganar el combate (sera un numero entre 0 (incluido) y el máximo)
      */
     public static int shieldsReward(){
-        return generator.nextInt(SHIELDS_REWARD);
+        return generator.nextInt(SHIELDS_REWARD + 1);
     }
 
     /**
@@ -78,7 +78,7 @@ public class Dice {
      * @return cantidad de vida que recibe el jugador al ganar el combate (sera un numero entre 0 (incluido) y el máximo)
      */
     public static int healthReward(){
-        return generator.nextInt(HEALTH_REWARD);
+        return generator.nextInt(HEALTH_REWARD + 1);
     }
 
     /**
@@ -102,7 +102,7 @@ public class Dice {
      * @return numero usos que se asignara a un arma/escudo (número aleatorio entre 0 (incluido) y el máximo)
      */
     public static int usesLeft(){
-        return generator.nextInt(MAX_USES);
+        return generator.nextInt(MAX_USES + 1);
     }
 
     /**
@@ -119,14 +119,7 @@ public class Dice {
      * @return true con una probabilidad inversamente proporcional a lo cercano que esté el parametro del número máximo de usos que puede tener un arma/escudo
      */
     public static boolean discardElement(int usesLeft){
-        if(generator.nextInt(MAX_USES)>=usesLeft){
-            return true;
-        } else {
-            return false;
-        }
-
-        //5 usos = 100% falso
-        //4 usos = 80% falso y 20% true
+        return generator.nextInt(MAX_USES)>=usesLeft;
     }
     
 }

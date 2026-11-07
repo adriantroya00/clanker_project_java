@@ -68,8 +68,8 @@ public class Labyrinth {
 
     public void addMonster(int row, int col, Monster monster) {
         if (posOK(row, col) && emptyPos(row, col)) {
-            monsters[row][col] = monster;
             labyrinth[row][col] = MONSTER_CHAR;
+            monsters[row][col] = monster;
             monster.setPos(row, col);
         }
     }
@@ -159,7 +159,7 @@ public class Labyrinth {
 
     private void updateOldPos(int row, int col) {
         if (posOK(row, col)) {
-            if (labyrinth[row][col] == COMBAT_CHAR) {
+            if (combatPos(row, col)) {
                 labyrinth[row][col] = MONSTER_CHAR;
             } else {
                 labyrinth[row][col] = EMPTY_CHAR;
@@ -195,7 +195,7 @@ public class Labyrinth {
         do {
             pos[ROW] = Dice.randomPos(nRows);
             pos[COL] = Dice.randomPos(nCols);
-        } while(labyrinth[pos[ROW]][pos[COL]] != EMPTY_CHAR);
+        } while(emptyPos(pos[ROW], pos[COL]));
     
         return pos;
 
@@ -219,14 +219,13 @@ public class Labyrinth {
                 }
             }
         
-            boolean monsterPos = monsterPos(row, col);
+            boolean monster_pos = monsterPos(row, col);
 
-            if (monsterPos) {
+            if (monster_pos) {
                 labyrinth[row][col] = COMBAT_CHAR;
                 output = monsters[row][col];
             } else {
-                char number = player.getNumber();
-                labyrinth[row][col] = number;
+                labyrinth[row][col] = player.getNumber();
             }
 
             players[row][col] = player;

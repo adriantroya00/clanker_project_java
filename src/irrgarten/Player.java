@@ -9,6 +9,7 @@ public class Player {
     private static final int MAX_SHIELDS = 3;
     private static final int INITIAL_HEALTH = 10;
     private static final int HITS2LOSE = 3;
+    private static final int NO_POS = -1;
     private String name;
     private char number;
     private float intelligence;
@@ -22,12 +23,15 @@ public class Player {
     private ArrayList<Shield> shields;
     
     //el nombre se debe inicializar como Player#numero
-    public Player( char _number){
+    public Player( char _number, float _intelligence, float _strength){
         this.number = _number;
         this.name = "Player#"+this.number;
-        this.intelligence = Dice.randomIntelligence();
-        this.strength = Dice.randomStrength();
+        this.intelligence = _intelligence;
+        this.strength = _strength;
         this.health = INITIAL_HEALTH;
+        this.row = NO_POS;
+        this.col = NO_POS;
+        this.consecutiveHits = 0;
         this.weapons = new ArrayList<>();
         this.shields = new ArrayList<>();
     }
@@ -98,6 +102,16 @@ public class Player {
     }
 
     public String toString() {
+        String armas = "";
+        for (Weapon w : weapons) {
+            armas += w + " ";
+        }
+
+        String escudos = "";
+        for (Shield sh : shields) {
+            escudos += sh + " ";
+        }
+
         return "Jugador {" + 
                 "\n Nombre = " + this.name +
                 "\n Numero = " + this.number +
@@ -107,6 +121,8 @@ public class Player {
                 "\n Fila = " + this.row + 
                 "\n Columna = " + this.col +
                 "\n Hits Consecutivos = " + this.consecutiveHits +
+                "\n Armas = " + armas +
+                "\n Escudos = " + escudos +
                 "\n}\n";
     }
 

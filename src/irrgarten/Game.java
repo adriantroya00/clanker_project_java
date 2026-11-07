@@ -15,20 +15,20 @@ public class Game {
         this.players = new ArrayList<>();
         for(int i = 0 ; i < nplayers ; i++){
             //para hacer de i un char hacemos ((char)('0+i))
-            this.players.add(new Player((char)('0'+i)));
-            
+            this.players.add(new Player((char) ('0' + i), Dice.randomIntelligence(), Dice.randomStrength()));
         }
         
         this.currentPlayerIndex = Dice.whoStarts(nplayers);
         this.currentPlayer = this.players.get(this.currentPlayerIndex);
 
         this.monsters = new ArrayList<>();
+
         labyrinth = new Labyrinth(5, 5, 4, 4);
+        
         this.log = "";
 
-        
-
         this.configureLabyrinth();
+
         this.labyrinth.spreadPlayers(players);
     }
 
@@ -73,7 +73,13 @@ public class Game {
         String playersStr = players.toString();
         String monstersStr = monsters.toString();
 
-        return new GameState(labyrinthStr, playersStr, monstersStr, currentPlayerIndex, finished(), log);
+        return new GameState(labyrinthStr,
+                            playersStr, 
+                            monstersStr, 
+                            currentPlayerIndex, 
+                            finished(), 
+                            log
+        );
     }
 
     private void configureLabyrinth(){

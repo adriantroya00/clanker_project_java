@@ -27,11 +27,4 @@ public class Weapon {
     public boolean discard() {
         return Dice.discardElement(uses);
     }
-
-    public void reduceUses() {
-        uses--;
-    }
-
-
-
 }

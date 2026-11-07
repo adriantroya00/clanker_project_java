@@ -3,6 +3,7 @@ package irrgarten;
 
 public class Monster {
     private static final int INITIAL_HEALTH = 5;
+    private static final int NO_POS = -1;
     private String name;
     private float intelligence;
     private float strength;
@@ -16,14 +17,8 @@ public class Monster {
         this.intelligence = _intelligence;
         this.strength = _strength;
         this.health = INITIAL_HEALTH;
-    }
-
-    //random intelligence y strength
-    public Monster(String _name , float _health ){
-        this.name = _name;
-        this.intelligence = Dice.randomIntelligence();
-        this.strength = Dice.randomStrength();
-        this.health = INITIAL_HEALTH;
+        this.row = NO_POS;
+        this.col = NO_POS;  
     }
 
     public boolean dead() {
@@ -56,6 +51,7 @@ public class Monster {
 
     public String toString() {
     return "Monstruo {\n" + 
+            "Nombre = " + this.name +
             "Inteligencia = " + this.intelligence + 
             "\n Fuerza = " + this.strength + 
             "\n Vida = " + this.health + 
