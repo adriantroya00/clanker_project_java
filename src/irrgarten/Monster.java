@@ -50,13 +50,13 @@ public class Monster {
     }
 
     public String toString() {
-    return "Monstruo {\n" + 
-            "Nombre = " + this.name +
-            "Inteligencia = " + this.intelligence + 
-            "\n Fuerza = " + this.strength + 
-            "\n Vida = " + this.health + 
-            "\n Fila = " + this.row + 
-            "\n Columna = " + this.col + "\n}\n";
+    return "Monstruo {" + 
+            "\nNombre = " + this.name +
+            "\nInteligencia = " + this.intelligence + 
+            "\nFuerza = " + this.strength + 
+            "\nVida = " + this.health + 
+            "\nFila = " + this.row + 
+            "\nColumna = " + this.col + "\n}\n";
     }
 
     private void gotWounded() {

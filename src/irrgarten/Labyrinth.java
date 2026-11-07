@@ -195,7 +195,7 @@ public class Labyrinth {
         do {
             pos[ROW] = Dice.randomPos(nRows);
             pos[COL] = Dice.randomPos(nCols);
-        } while(emptyPos(pos[ROW], pos[COL]));
+        } while(labyrinth[pos[ROW]] [pos[COL]] != EMPTY_CHAR);
     
         return pos;
 

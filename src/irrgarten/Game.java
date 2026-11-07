@@ -15,7 +15,7 @@ public class Game {
         this.players = new ArrayList<>();
         for(int i = 0 ; i < nplayers ; i++){
             //para hacer de i un char hacemos ((char)('0+i))
-            this.players.add(new Player((char) ('0' + i), Dice.randomIntelligence(), Dice.randomStrength()));
+            this.players.add(new Player( (char) ('0'+i), Dice.randomIntelligence(), Dice.randomStrength()));
         }
         
         this.currentPlayerIndex = Dice.whoStarts(nplayers);

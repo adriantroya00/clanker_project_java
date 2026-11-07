@@ -20,6 +20,7 @@ public class Irrgarten {
         TextUI view = new TextUI();
         Game game = new Game(2,2);
         Controller controller = new Controller(game, view);
-        controller.play();    }
+        controller.play();    
+    }
     
 }
