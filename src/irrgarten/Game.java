@@ -11,25 +11,57 @@ public class Game {
     private Player currentPlayer;
 
     
-    public Game(int nplayers, int nmonsters ){
+    /** Mantiene la compatibilidad con el constructor original. */
+    public Game(int nplayers) {
+        this(nplayers, false);
+    }
+
+    public Game(int nplayers, boolean debug){
         this.players = new ArrayList<>();
-        for(int i = 0 ; i < nplayers ; i++){
-            //para hacer de i un char hacemos ((char)('0+i))
-            this.players.add(new Player( (char) ('0'+i), Dice.randomIntelligence(), Dice.randomStrength()));
-        }
-        
-        this.currentPlayerIndex = Dice.whoStarts(nplayers);
-        this.currentPlayer = this.players.get(this.currentPlayerIndex);
-
         this.monsters = new ArrayList<>();
-
-        labyrinth = new Labyrinth(5, 5, 4, 4);
-        
         this.log = "";
 
-        this.configureLabyrinth();
+        if (debug) {
+            for (int i = 0; i < nplayers; i++) {
+                players.add(new Player((char) ('0' + i), 1.0f, 1.0f));
+            }
 
-        this.labyrinth.spreadPlayers(players);
+            currentPlayerIndex = 0;
+            currentPlayer = players.get(currentPlayerIndex);
+            labyrinth = new Labyrinth(3, 3, 2, 2);
+
+            configureLabyrinthDebug();
+
+            if (players.size() > 0) {
+                labyrinth.putPlayer2D(-1, -1, 0, 0, players.get(0));
+            }
+            if (players.size() > 1) {
+                labyrinth.putPlayer2D(-1, -1, 0, 1, players.get(1));
+            }
+        } else {
+            for(int i = 0 ; i < nplayers ; i++){
+                players.add(new Player(
+                    (char) ('0' + i),
+                    Dice.randomIntelligence(),
+                    Dice.randomStrength()
+                ));
+            }
+
+            currentPlayerIndex = Dice.whoStarts(nplayers);
+            currentPlayer = players.get(currentPlayerIndex);
+            labyrinth = new Labyrinth(5, 5, 4, 4);
+
+            configureLabyrinth();
+            labyrinth.spreadPlayers(players);
+        }
+    }
+
+    public Player getCurrentPlayer() {
+        return currentPlayer;
+    }
+
+    public Labyrinth getLabyrinth() {
+        return labyrinth;
     }
 
     public boolean finished(){
@@ -70,12 +102,19 @@ public class Game {
 
     public GameState getGameState(){
         String labyrinthStr = labyrinth.toString();
-        String playersStr = players.toString();
-        String monstersStr = monsters.toString();
+        StringBuilder playersStr = new StringBuilder();
+        for (Player player : players) {
+            playersStr.append(player);
+        }
+
+        StringBuilder monstersStr = new StringBuilder();
+        for (Monster monster : monsters) {
+            monstersStr.append(monster);
+        }
 
         return new GameState(labyrinthStr,
-                            playersStr, 
-                            monstersStr, 
+                            playersStr.toString(),
+                            monstersStr.toString(),
                             currentPlayerIndex, 
                             finished(), 
                             log
@@ -87,15 +126,31 @@ public class Game {
         labyrinth.addBlock(Orientation.VERTICAL , 1 , 1 , 2 );
         labyrinth.addBlock(Orientation.HORIZONTAL , 3 , 2 , 2 );
 
-        Monster m1 = new Monster("Adri" , 2.0f , 3.0f );
-        Monster m2 = new Monster("Alvaro" , 2.0f , 3.0f );
+        int[] pos1 = labyrinth.randomEmptyPos();
+        Monster m1 = new Monster("Adri", Dice.randomIntelligence(), Dice.randomStrength() );
+        labyrinth.addMonster(pos1[0], pos1[1], m1);
+        monsters.add(m1);
+        
+        int[] pos2 = labyrinth.randomEmptyPos();
+        Monster m2 = new Monster("Alvaro", Dice.randomIntelligence(), Dice.randomStrength() );
+        labyrinth.addMonster(pos2[0], pos2[1], m2);
+        monsters.add(m2);
 
-        labyrinth.addMonster(0, 2, m1);
-        labyrinth.addMonster(4, 3, m2);
+        
+
+    }
+
+    private void configureLabyrinthDebug() {
+        labyrinth.addBlock(Orientation.VERTICAL, 1, 1, 1);
+
+        Monster m1 = new Monster("Adri", 2.0f, 3.0f);
+        Monster m2 = new Monster("Alvaro", 1.5f, 2.0f);
+
+        labyrinth.addMonster(1, 0, m1);
+        labyrinth.addMonster(2, 1, m2);
 
         monsters.add(m1);
         monsters.add(m2);
-
     }
 
     private void nextPlayer(){
@@ -163,31 +218,31 @@ public class Game {
     }
 
     private void logPlayerWon(){
-        this.log += "El jugador ha ganado el combate.\n";
+        this.log += "El jugador ha ganado el combate\n";
     }
 
     private void logMonsterWon(){
-        this.log += "El monstruo ha ganado el combate.\n";
+        this.log += "El monstruo ha ganado el combate\n";
     }
 
     private void logResurrected(){
-        this.log += "El jugador ha resucitado.\n";
+        this.log += "El jugador ha resucitado\n";
     }
 
     private void logPlayerSkipTurn(){
-        this.log += "El jugador ha perdido el turno al estar muerto.\n";
+        this.log += "El jugador ha perdido el turno al estar muerto\n";
     }
 
     private void logPlayerNoOrders(){
-        this.log += "El jugador no ha seguido las instrucciones (no fue posible).\n";
+        this.log += "El jugador no ha seguido las instrucciones (no fue posible)\n";
     }
 
     private void logNoMonster(){
-        this.log += "El jugador se ha movido a una celda vacía o no le fue posible moverse.\n";
+        this.log += "El jugador se ha movido a una celda vacia o no le fue posible moverse\n";
     }
 
     private void logRounds(int rounds, int max){
-        this.log += "Se han producido " + rounds + " de " + max + " rondas de combate.\n";
+        this.log += "Se han producido " + rounds + "  de " + max + " rondas de combate\n";
     }
 
 

@@ -63,7 +63,7 @@ public class Player {
     public boolean dead() {
         return(this.health <= 0);
     }
-                                               
+                                            
     public Directions move(Directions direction, ArrayList<Directions> validMoves){
         int size = validMoves.size(); 
         boolean contained = validMoves.contains(direction);
@@ -124,6 +124,10 @@ public class Player {
                 "\n Armas = " + armas +
                 "\n Escudos = " + escudos +
                 "\n}\n";
+    }
+
+    public void setHealth(float health) {
+        this.health = health;
     }
 
     private void receiveWeapon(Weapon w){
@@ -219,6 +223,8 @@ public class Player {
         }
         return sumTotal;
     }
+
+    
 
 
 }

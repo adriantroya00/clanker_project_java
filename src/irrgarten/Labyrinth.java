@@ -189,7 +189,8 @@ public class Labyrinth {
         return pos;
     }
 
-    private int[] randomEmptyPos() {
+    // Cambiamos la visibilidad de esta funcion ya que la necesita Game para poder colocar monstruos en posiciones vacias
+    public int[] randomEmptyPos() {
         int[] pos = new int[2];
 
         do {
@@ -206,7 +207,7 @@ public class Labyrinth {
          */
     }
 
-    private Monster putPlayer2D(int oldRow, int oldCol, int row, int col, Player player) {
+    Monster putPlayer2D(int oldRow, int oldCol, int row, int col, Player player) {
         Monster output = null;
 
         if (canStepOn(row, col)) {

@@ -18,7 +18,7 @@ public class Irrgarten {
      */
     public static void main(String[] args) {
         TextUI view = new TextUI();
-        Game game = new Game(2,2);
+        Game game = new Game(2,false);
         Controller controller = new Controller(game, view);
         controller.play();    
     }
