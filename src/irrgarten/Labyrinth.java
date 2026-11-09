@@ -4,11 +4,11 @@ import java.util.ArrayList;
 
 public class Labyrinth {
     private static final char 
-            BLOCK_CHAR = 'X',
-            EMPTY_CHAR = '-',
-            MONSTER_CHAR = 'M',
+            BLOCK_CHAR = 'X',  // obstaculo
+            EMPTY_CHAR = '-',  // casilla vacia
+            MONSTER_CHAR = 'M', // monstruo
             COMBAT_CHAR = 'C', //tiene a la vez monstruo y jugador
-            EXIT_CHAR = 'E';
+            EXIT_CHAR = 'E'; // casilla salida
 
     private static final int 
             ROW = 0,
@@ -20,11 +20,11 @@ public class Labyrinth {
             exitRow,
             exitCol;
 
-    private char[][] labyrinth;
-    private Monster[][] monsters;
-    private Player[][] players;
+    private char[][] labyrinth; // simbolo de cada casilla
+    private Monster[][] monsters; // referencia al monstruo
+    private Player[][] players; // referencia al jugador
 
-    public Labyrinth(int _nRows, int _nCols, int _exitRow, int _exitCol) {
+    public Labyrinth(int _nRows, int _nCols, int _exitRow, int _exitCol) { 
         this.nRows = _nRows;
         this.nCols = _nCols;
         this.exitRow = _exitRow;
@@ -34,27 +34,27 @@ public class Labyrinth {
         this.monsters = new Monster[nRows][nCols];
         this.players = new Player[nRows][nCols];
 
-        for( int i = 0 ; i < nRows ; i++){
+        for( int i = 0 ; i < nRows ; i++){ // rellena el mapa de '-'
             for( int j = 0; j < nCols ; j++){
                 labyrinth[i][j] = EMPTY_CHAR;
             }
         }
         
-        labyrinth[exitRow][exitCol] = EXIT_CHAR;
+        labyrinth[exitRow][exitCol] = EXIT_CHAR; // pone la casilla de salida
     }
 
     public void spreadPlayers(ArrayList<Player> players) {
-        for (Player p : players) {
-            int[] pos = randomEmptyPos();
-            putPlayer2D(-1, -1, pos[ROW], pos[COL], p);
+        for (Player p : players) { // para cada jugador
+            int[] pos = randomEmptyPos(); // pide una posición vacia aleatoria
+            putPlayer2D(-1, -1, pos[ROW], pos[COL], p); // coloca al jugador 
         }
     }
 
     public boolean haveAWinner() {
-        return (players[exitRow][exitCol] != null);
+        return (players[exitRow][exitCol] != null); // si hay un jugador en la casilla de salida, es que ha ganado
     }
 
-    public String toString() {
+    public String toString() {  // creación mapa en terminal
         String s = " Laberinto {\n";
         for(int i = 0 ; i < nRows ; i++){
             for(int j = 0 ; j <nCols ; j++){
@@ -67,38 +67,41 @@ public class Labyrinth {
     }
 
     public void addMonster(int row, int col, Monster monster) {
-        if (posOK(row, col) && emptyPos(row, col)) {
-            labyrinth[row][col] = MONSTER_CHAR;
-            monsters[row][col] = monster;
-            monster.setPos(row, col);
+        if (posOK(row, col) && emptyPos(row, col)) { // si la posición esta dentro y vacía
+            labyrinth[row][col] = MONSTER_CHAR; // anota 'M' en el mapa
+            monsters[row][col] = monster; // guarda la referencia
+            monster.setPos(row, col); // le dice al monstruo donde está
         }
     }
 
     public Monster putPlayer(Directions direction, Player player) {
+        // se lee la posición actual del jugador
         int oldRow = player.getRow();
         int oldCol = player.getCol();
 
+        // se calcula la nueva posición con dir2Pos
         int[] newPos = dir2Pos(oldRow, oldCol, direction);
+        // se delega en putPlayer2D 
         Monster monster = putPlayer2D(oldRow, oldCol, newPos[ROW], newPos[COL], player);
 
-        return monster;
+        return monster; // devuelve el monstruo con el que ha chocado
     }
 
-    public void addBlock(Orientation orientation, int startRow, int startCol, int length) {
+    public void addBlock(Orientation orientation, int startRow, int startCol, int length) { // se encarga de dibujar una línea de obstaculos 
         int incRow, incCol;
 
-        if (orientation == Orientation.VERTICAL) {
+        if (orientation == Orientation.VERTICAL) { // se avanza en filas
             incRow = 1;
             incCol = 0;
         } else {
             incRow = 0;
-            incCol = 1;
+            incCol = 1;  // se avanza en columnas
         }
 
         int row = startRow;
         int col = startCol;
 
-        while (posOK(row,col) && (emptyPos(row, col)) && (length > 0)) {
+        while (posOK(row,col) && (emptyPos(row, col)) && (length > 0)) { // mientras se cumplan estas condiciones, se seguira creando el mapa
             labyrinth[row][col] = BLOCK_CHAR;
 
             length -= 1;
@@ -107,7 +110,7 @@ public class Labyrinth {
         }
     }
 
-    public ArrayList<Directions> validMoves(int row, int col) {
+    public ArrayList<Directions> validMoves(int row, int col) { // prueba las cuatro direcciones y devuelve una lista con las posibles (Player move coge la primera de la lista si la direccion pedida no es valida)
         ArrayList<Directions> output = new ArrayList<>();
 
         if (canStepOn(row + 1, col)) {
@@ -129,28 +132,28 @@ public class Labyrinth {
         return output;
     }
 
-    private boolean posOK(int row, int col) {
+    private boolean posOK(int row, int col) { // mientras que la posicion proporcionada este dentro del tablero, esto devolvera true
         return (0 <= row && row < this.nRows &&
                 0 <= col && col < this.nCols);
     }
 
-    private boolean emptyPos(int row, int col) {
+    private boolean emptyPos(int row, int col) { // devuelve true si la posición en el tablero está vacia
         return (labyrinth[row][col] == EMPTY_CHAR);
     }
 
     private boolean monsterPos(int row, int col) {
-        return (labyrinth[row][col] == MONSTER_CHAR);
+        return (labyrinth[row][col] == MONSTER_CHAR); // devuelve true si la posición en el tablero hay un monstruo
     }
 
     private boolean exitPos(int row, int col) {
-        return (labyrinth[row][col] == EXIT_CHAR);
+        return (labyrinth[row][col] == EXIT_CHAR); // devuelve true si la posición en el tablero hay una casilla de salida
     }
 
-    private boolean combatPos(int row, int col) {
+    private boolean combatPos(int row, int col) { // devuelve true si la posición en el tablero hay un combate
         return (labyrinth[row][col] == COMBAT_CHAR);
     }
 
-    private boolean canStepOn(int row, int col) {
+    private boolean canStepOn(int row, int col) { // se encarga de indicar si la posición suministrada es: vacía, habita un monstruo o salida
         return (posOK(row, col) &&
                 (monsterPos(row, col) ||
                 exitPos(row, col) ||
@@ -158,16 +161,16 @@ public class Labyrinth {
     }
 
     private void updateOldPos(int row, int col) {
-        if (posOK(row, col)) {
-            if (combatPos(row, col)) {
-                labyrinth[row][col] = MONSTER_CHAR;
+        if (posOK(row, col)) { // si la posición esta en el tablero
+            if (combatPos(row, col)) { // si hay un combate
+                labyrinth[row][col] = MONSTER_CHAR; // pasa a indicar que hay un mosntruo
             } else {
-                labyrinth[row][col] = EMPTY_CHAR;
+                labyrinth[row][col] = EMPTY_CHAR; // pasa a indicar que está vacia
             }
         }
     }
 
-    private int[] dir2Pos(int row , int col, Directions direction) {
+    private int[] dir2Pos(int row , int col, Directions direction) { // se encarga de calcular la posición a la que se llegaría desde la posición en la que está
         int[] pos = new int[2];
         pos[ROW] = row;
         pos[COL] = col;
@@ -194,9 +197,9 @@ public class Labyrinth {
         int[] pos = new int[2];
 
         do {
-            pos[ROW] = Dice.randomPos(nRows);
+            pos[ROW] = Dice.randomPos(nRows); // se genera una posición aleatoria en el laberinto
             pos[COL] = Dice.randomPos(nCols);
-        } while(labyrinth[pos[ROW]] [pos[COL]] != EMPTY_CHAR);
+        } while(labyrinth[pos[ROW]] [pos[COL]] != EMPTY_CHAR); // se generan posiciones hasta cumplirse la restricción.
     
         return pos;
 
@@ -208,11 +211,11 @@ public class Labyrinth {
     }
 
     Monster putPlayer2D(int oldRow, int oldCol, int row, int col, Player player) {
-        Monster output = null;
+        Monster output = null; // si no se puede pisar el destino, se devuelve null
 
-        if (canStepOn(row, col)) {
-            if (posOK(oldRow, oldCol)) {
-                Player p = players[oldRow][oldCol];
+        if (canStepOn(row, col)) { // se limpia la casilla vieja si
+            if (posOK(oldRow, oldCol)) { // si existe
+                Player p = players[oldRow][oldCol]; // realmente contiene a ese jugador
 
                 if (p == player) {
                     updateOldPos(oldRow, oldCol);
@@ -222,11 +225,11 @@ public class Labyrinth {
         
             boolean monster_pos = monsterPos(row, col);
 
-            if (monster_pos) {
-                labyrinth[row][col] = COMBAT_CHAR;
-                output = monsters[row][col];
+            if (monster_pos) { // si hay monstruos
+                labyrinth[row][col] = COMBAT_CHAR; // se pasa a combate
+                output = monsters[row][col]; // devuelve al monstruo
             } else {
-                labyrinth[row][col] = player.getNumber();
+                labyrinth[row][col] = player.getNumber(); // se escribe el numero dek jugador
             }
 
             players[row][col] = player;

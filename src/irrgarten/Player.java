@@ -5,19 +5,19 @@ import java.util.Iterator;
 
 public class Player {
 
-    private static final int MAX_WEAPONS = 2;
-    private static final int MAX_SHIELDS = 3;
-    private static final int INITIAL_HEALTH = 10;
-    private static final int HITS2LOSE = 3;
+    private static final int MAX_WEAPONS = 2; // maximo numero de armas
+    private static final int MAX_SHIELDS = 3; // maximo numero de escudos
+    private static final int INITIAL_HEALTH = 10; // maximos puntos de salud
+    private static final int HITS2LOSE = 3; // golpes consecutivos para perder un combate
     private static final int NO_POS = -1;
-    private String name;
-    private char number;
-    private float intelligence;
-    private float strength;
-    private float health;
-    private int row;
+    private String name; // nombre
+    private char number; // numero jugador
+    private float intelligence; // defensa
+    private float strength; // fuerza
+    private float health; // vida
+    private int row; // posicion en el tablero
     private int col;
-    private int consecutiveHits = 0;
+    private int consecutiveHits = 0; // golpes recibidos seguidos sin pararlos
 
     private ArrayList<Weapon> weapons;
     private ArrayList<Shield> shields;
@@ -37,13 +37,17 @@ public class Player {
     }
 
     public void resurrect() {
+        // vacia armas y escudos
         this.weapons.clear();
         this.shields.clear();
+        // restaura salud inicial
         this.health = INITIAL_HEALTH;
+        // pone a cero los golpes consecutivos
         this.consecutiveHits = 0;
     }
 
-    public void setPos(int row, int col) {
+    // sirven para saber de donde parte un jugador y que caracter dibujar en la casilla
+    public void setPos(int row, int col) { // 
         this.row = row;
         this.col = col;
     }
@@ -60,7 +64,7 @@ public class Player {
         return this.number; 
     }
 
-    public boolean dead() {
+    public boolean dead() { // muerte jugador
         return(this.health <= 0);
     }
                                             
@@ -68,26 +72,28 @@ public class Player {
         int size = validMoves.size(); 
         boolean contained = validMoves.contains(direction);
 
-        if (size > 0 && !contained) {
-            return validMoves.get(0);
+        if (size > 0 && !contained) { // si la dirección pedida es válida
+            return validMoves.get(0); // se usa
         } else {
-            return direction;
+            return direction; // devuelve la pedida (aunque no se mueva)
         }
     }
 
     public float attack() {
-        return this.strength + this.sumWeapons();
+        return this.strength + this.sumWeapons(); // fuerza base mas lo que aporta cada arma
     }
 
     public boolean defend( float receivedAttack ) {
-        return this.manageHit(receivedAttack);
+        return this.manageHit(receivedAttack); // accion defensa. Delega en manageHit
     }
 
     public void receiveReward(){
+        // se pide al dado cuantas armas o escudos le tocan
         int wReward = Dice.weaponsReward();
         int sReward = Dice.shieldsReward();
 
-        for (int i = 1; i <= wReward; i++) {
+        // para cada uno, se crea el objeto y lo recibe
+        for (int i = 1; i <= wReward; i++) { 
             Weapon wnew = this.newWeapon();
             this.receiveWeapon(wnew);
         }
@@ -97,6 +103,7 @@ public class Player {
             this.receiveShield(snew);
         }
 
+        // se suma una cantidad aleatoria de salud
         int extraHealth = Dice.healthReward();
         this.health += extraHealth;
     }
@@ -126,12 +133,12 @@ public class Player {
                 "\n}\n";
     }
 
-    public void setHealth(float health) {
+    public void setHealth(float health) { 
         this.health = health;
     }
 
     private void receiveWeapon(Weapon w){
-        Iterator<Weapon> it = weapons.iterator();
+        Iterator<Weapon> it = weapons.iterator(); // se limpia el inventario de armas
         while (it.hasNext()) {
             Weapon wi = it.next();
             if (wi.discard()) {
@@ -139,13 +146,13 @@ public class Player {
             }
         }
 
-        if (weapons.size() < MAX_WEAPONS) {
-            weapons.add(w);
+        if (weapons.size() < MAX_WEAPONS) { // si hay hueco
+            weapons.add(w); // se añade un arma
         }
     }
 
     private void receiveShield(Shield s){ 
-        Iterator<Shield> it = shields.iterator();
+        Iterator<Shield> it = shields.iterator(); // se limpia el inventario de escudos
         while (it.hasNext()) {
             Shield si = it.next();
             if (si.discard()) {
@@ -153,38 +160,38 @@ public class Player {
             }
         }
 
-        if (shields.size() < MAX_SHIELDS) {
-            shields.add(s);
+        if (shields.size() < MAX_SHIELDS) { // si hay hueco
+            shields.add(s); // se añade un escudo
         }
     }
 
     private Weapon newWeapon() {
-        return new Weapon(Dice.weaponPower(), Dice.usesLeft());
+        return new Weapon(Dice.weaponPower(), Dice.usesLeft()); // se fabrica el objeto pidiendo al dado la potencia y usos
     }
 
     private Shield newShield() {
-        return new Shield(Dice.shieldPower(), Dice.usesLeft());
+        return new Shield(Dice.shieldPower(), Dice.usesLeft()); // se fabrica el objeto pidiendo al dado la defensa y usos
     }
 
     private float defensiveEnergy() {
-        return this.intelligence + this.sumShields();
+        return this.intelligence + this.sumShields(); // equivalente defensivo de attack
     }
     
     private boolean manageHit(float receivedAttack){
         float defense = this.defensiveEnergy();
 
-        if (defense < receivedAttack) {
-            this.gotWounded();
-            this.incConsecutiveHits();
+        if (defense < receivedAttack) { // si la defensa no alcanza el ataque
+            this.gotWounded(); // -1 de salud
+            this.incConsecutiveHits(); // suma 1 a la racha de golpes seguidos
         } else {
-            this.resetHits();
+            this.resetHits(); // si para, se reinicia la racha
         }
 
         boolean lose;
         
-        if ((consecutiveHits == HITS2LOSE) || (dead())) {
-            this.resetHits();
-            lose = true;
+        if ((consecutiveHits == HITS2LOSE) || (dead())) { // si los golpes seguidos llegan a 3 o muere
+            this.resetHits(); // resetea la racha
+            lose = true; // pierde
         } else {
             lose = false;
         }
@@ -206,9 +213,9 @@ public class Player {
 
     private float sumWeapons() {
         float sumTotal = 0.0f;
-        for (Weapon weapon : this.weapons) {
+        for (Weapon weapon : this.weapons) { // recorren lista
             if (weapon != null) {
-                sumTotal += weapon.attack();
+                sumTotal += weapon.attack(); // acumulan ataque
             }
         }
         return sumTotal;
@@ -216,9 +223,9 @@ public class Player {
 
     private float sumShields() {
         float sumTotal = 0.0f;
-        for (Shield shield : this.shields) {
+        for (Shield shield : this.shields) { // recorren lista
             if (shield != null) {
-                sumTotal += shield.protect();
+                sumTotal += shield.protect(); // acumulan defensa
             }
         }
         return sumTotal;

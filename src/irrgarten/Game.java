@@ -2,21 +2,21 @@ package irrgarten;
 import java.util.ArrayList;
 
 public class Game {
-    private static final int MAX_ROUNDS = 10 ;
-    private int currentPlayerIndex ;
-    private String log ;
-    private ArrayList<Player> players;
-    private ArrayList<Monster> monsters; 
-    private Labyrinth labyrinth;
-    private Player currentPlayer;
+    private static final int MAX_ROUNDS = 10 ;    // rondas maximas de un combate
+    private int currentPlayerIndex ;              // que jugador tiene el turno actual
+    private String log ;                          // texto sucesos turno
+    private ArrayList<Player> players;            // lista jugadores: sirve para orden turnos
+    private ArrayList<Monster> monsters;          // lista monstruos: sirve para mostrarlos
+    private Labyrinth labyrinth;                  // tablero
+    private Player currentPlayer;                 // que jugador tiene el turno actual
 
 
-    public Game(int nplayers, boolean debug){
+    public Game(int nplayers, boolean debug){ 
         this.players = new ArrayList<>();
         this.monsters = new ArrayList<>();
         this.log = "";
 
-        if (debug) {
+        if (debug) { // este if sirve para los test de casos sin aleatoriedad
             for (int i = 0; i < nplayers; i++) {
                 players.add(new Player((char) ('0' + i), 1.0f, 1.0f));
             }
@@ -34,62 +34,62 @@ public class Game {
                 labyrinth.putPlayer2D(-1, -1, 0, 1, players.get(1));
             }
         } else {
-            for(int i = 0 ; i < nplayers ; i++){
+            for(int i = 0 ; i < nplayers ; i++){ 
                 players.add(new Player(
-                    (char) ('0' + i),
-                    Dice.randomIntelligence(),
-                    Dice.randomStrength()
+                    (char) ('0' + i), // se crea nplayers numerados con este caracter
+                    Dice.randomIntelligence(), // se les asigna una inteligencia aleatoria
+                    Dice.randomStrength() // se les asigna una fuerza aleatoria
                 ));
             }
 
-            currentPlayerIndex = Dice.whoStarts(nplayers);
-            currentPlayer = players.get(currentPlayerIndex);
-            labyrinth = new Labyrinth(5, 5, 4, 4);
+            currentPlayerIndex = Dice.whoStarts(nplayers); // se elige al azar que jugador empieza
+            currentPlayer = players.get(currentPlayerIndex); // se fija currentPlayer
+            labyrinth = new Labyrinth(5, 5, 4, 4); // se crea el laberinto con ese tamaño
 
-            configureLabyrinth();
-            labyrinth.spreadPlayers(players);
+            configureLabyrinth(); // se llama primero a este método para que los jugadores solo caigan en casillas que no sean ni obstaculos ni monstruos
+            labyrinth.spreadPlayers(players); // se reparten los jugadores tras hacer la comprobación anterior
         }
     }
 
-    public Player getCurrentPlayer() {
+    public Player getCurrentPlayer() { // es usado para ambos test, se obtiene el jugador actual
         return currentPlayer;
     }
 
-    public Labyrinth getLabyrinth() {
+    public Labyrinth getLabyrinth() { // es usado en el test del movimiento; devuelve el laberinto
         return labyrinth;
     }
 
     public boolean finished(){
-        return labyrinth.haveAWinner();
+        return labyrinth.haveAWinner();  // delega en este método ya que game no necesita saber como se gana
     }
 
-    public boolean nextStep( Directions preferredDirection){
-        log = "";
-        boolean dead = currentPlayer.dead();
+    public boolean nextStep( Directions preferredDirection){  // ejecuta un turno y devuelve true si ha terminado
+        log = "";  // se vacia el log
+        boolean dead = currentPlayer.dead(); // se inicializa dead
 
-        if (!dead) {
-            Directions direction = actualDirection(preferredDirection);
+        if (!dead) { // si no murio el jugador
+            Directions direction = actualDirection(preferredDirection); // se calcula la dirección real
 
             if (direction != preferredDirection) {
-                logPlayerNoOrders();
+                logPlayerNoOrders(); // si difiere lo antoa en el log
             }
 
-            Monster monster = labyrinth.putPlayer(direction, currentPlayer);
+            Monster monster = labyrinth.putPlayer(direction, currentPlayer); // mueve al jugador
 
-            if (monster == null) {
+            if (monster == null) { // si no hay monstruo
                 logNoMonster();
             } else {
-                GameCharacter winner = combat(monster);
-                manageReward(winner);
+                GameCharacter winner = combat(monster); // si lo hay, se produce un combate
+                manageReward(winner); // se reparten recompensas
             }
         } else {
-            manageResurrection();
+            manageResurrection(); // si está muerto, se intenta resucitar
         }
 
-        boolean endGame = finished();
+        boolean endGame = finished(); 
 
         if (!endGame) {
-            nextPlayer();
+            nextPlayer(); // si terminó, se pasa al siguiente turno
         }
 
         return endGame;
@@ -118,12 +118,13 @@ public class Game {
 
     private void configureLabyrinth(){
         
+        // se crea el mapa del laberinto
         labyrinth.addBlock(Orientation.VERTICAL , 1 , 1 , 2 );
         labyrinth.addBlock(Orientation.HORIZONTAL , 3 , 2 , 2 );
 
-        int[] pos1 = labyrinth.randomEmptyPos();
-        Monster m1 = new Monster("Adri", Dice.randomIntelligence(), Dice.randomStrength() );
-        labyrinth.addMonster(pos1[0], pos1[1], m1);
+        int[] pos1 = labyrinth.randomEmptyPos(); // creamos un vector int para randomizar la posicion del monstruo
+        Monster m1 = new Monster("Adri", Dice.randomIntelligence(), Dice.randomStrength() ); // se crea el monstruo 1
+        labyrinth.addMonster(pos1[0], pos1[1], m1); // se añade el monstruo al laberinto 
         monsters.add(m1);
         
         int[] pos2 = labyrinth.randomEmptyPos();
@@ -135,7 +136,7 @@ public class Game {
 
     }
 
-    private void configureLabyrinthDebug() {
+    private void configureLabyrinthDebug() { // igual que antes, pero con parametros cambiados para el debug
         labyrinth.addBlock(Orientation.VERTICAL, 1, 1, 1);
 
         Monster m1 = new Monster("Adri", 2.0f, 3.0f);
@@ -148,67 +149,67 @@ public class Game {
         monsters.add(m2);
     }
 
-    private void nextPlayer(){
-        currentPlayerIndex = (currentPlayerIndex+1)%players.size();
+    private void nextPlayer(){ 
+        currentPlayerIndex = (currentPlayerIndex+1)%players.size(); // se hace un recorrido circular: tras el ultimo jugador, se vuelve al primero
         currentPlayer = players.get(currentPlayerIndex);
     }
 
-    private Directions actualDirection(Directions preferredDirection){
-        int currentRow = currentPlayer.getRow();
+    private Directions actualDirection(Directions preferredDirection){ 
+        int currentRow = currentPlayer.getRow(); // se inicializan para obtener la posición actual del jugador
         int currentCol = currentPlayer.getCol();
 
-        ArrayList<Directions> validMoves = labyrinth.validMoves(currentRow, currentCol);
+        ArrayList<Directions> validMoves = labyrinth.validMoves(currentRow, currentCol); // pregunta al laberinto los movimientos válidos desde la posición del jugador
 
-        Directions output = currentPlayer.move(preferredDirection, validMoves);
+        Directions output = currentPlayer.move(preferredDirection, validMoves); // se los pasa a Player.move para que decida
 
         return output;
     }
 
     private GameCharacter combat(Monster monster){
-        int rounds = 0;
-        GameCharacter winner = GameCharacter.PLAYER;
+        int rounds = 0; 
+        GameCharacter winner = GameCharacter.PLAYER; 
 
-        float playerAttack = currentPlayer.attack();
+        float playerAttack = currentPlayer.attack(); // el jugador ataca primero
 
-        boolean lose = monster.defend(playerAttack);
+        boolean lose = monster.defend(playerAttack); // esta variable significa que "el que acaba de defenderse ha perdido" (es usado en ambos bandos)
 
-        while (!lose && (rounds < MAX_ROUNDS)) {
-            winner = GameCharacter.MONSTER;
-            rounds++;
+        while (!lose && (rounds < MAX_ROUNDS)) { // mientras que el monstruo no haya perdido y no se haya llegado al máximo de rondas 
+            winner = GameCharacter.MONSTER; // primeramente se pone al monstruo como ganador al atacar primero
+            rounds++; // incremento ronda
 
-            float monsterAttack = monster.attack();
+            float monsterAttack = monster.attack(); // ataque monstruo
 
-            lose = currentPlayer.defend(monsterAttack);
+            lose = currentPlayer.defend(monsterAttack); // defensa del jugador
 
             if (!lose) {
-            playerAttack = currentPlayer.attack();
-            winner = GameCharacter.PLAYER;
-            lose = monster.defend(playerAttack);
+            playerAttack = currentPlayer.attack(); // ataque jugador
+            winner = GameCharacter.PLAYER; // se le da la victoria al jugador
+            lose = monster.defend(playerAttack); // defensa del monstruo
             }
         }
 
-        logRounds(rounds, MAX_ROUNDS);
+        logRounds(rounds, MAX_ROUNDS); // si se han alcanzado el maximo de rondas y no hay ganador, gana el player automaticamente
 
         return winner;
     }
 
     private void manageReward(GameCharacter winner){
-        if (winner == GameCharacter.PLAYER) {
-            currentPlayer.receiveReward();
-            logPlayerWon();
+        if (winner == GameCharacter.PLAYER) { // si el ganador ha sido el player
+            currentPlayer.receiveReward(); // se le da una recompensa al jugador
+            logPlayerWon(); // ganó el jugador
         } else {
-            logMonsterWon();
+            logMonsterWon(); // ganó el monstruo
         }
     }
 
     private void manageResurrection(){
-        boolean resurrect = Dice.resurrectPlayer();
+        boolean resurrect = Dice.resurrectPlayer(); // se pregunta al dado si el jugador revive
 
-        if (resurrect) {
-            currentPlayer.resurrect();
+        if (resurrect) { // si sí 
+            currentPlayer.resurrect(); // revive el jugador
             logResurrected();
-        } else {
-            logPlayerSkipTurn();
+        } else { // si no
+            logPlayerSkipTurn(); // se pasa el turno
         }
     }
 
