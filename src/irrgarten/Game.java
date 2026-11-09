@@ -10,11 +10,6 @@ public class Game {
     private Labyrinth labyrinth;
     private Player currentPlayer;
 
-    
-    /** Mantiene la compatibilidad con el constructor original. */
-    public Game(int nplayers) {
-        this(nplayers, false);
-    }
 
     public Game(int nplayers, boolean debug){
         this.players = new ArrayList<>();

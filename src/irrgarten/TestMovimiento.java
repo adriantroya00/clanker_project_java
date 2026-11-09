@@ -13,7 +13,7 @@ public class TestMovimiento {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        Game game = new Game(2);  
+        Game game = new Game(2, true);  
         TextUI vista=new TextUI();
         
         vista.showGame(game.getGameState());
