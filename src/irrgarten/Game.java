@@ -60,49 +60,56 @@ public class Game {
     }
 
     public boolean finished(){
-        return labyrinth.haveAWinner();  // delega en este método ya que game no necesita saber como se gana
+        return labyrinth.haveAWinner();                                         // delega en este método ya que game no necesita saber como se gana
     }
 
-    public boolean nextStep( Directions preferredDirection){  // ejecuta un turno y devuelve true si ha terminado
-        log = "";  // se vacia el log
-        boolean dead = currentPlayer.dead(); // se inicializa dead
+    public boolean nextStep( Directions preferredDirection){                    // ejecuta un turno y devuelve bool si ha terminado el juego
+        log = "";                                                               // se vacia el log
+        boolean dead = currentPlayer.dead();                                    // comprobamos si el jugador esta muerto
 
-        if (!dead) { // si no murio el jugador
-            Directions direction = actualDirection(preferredDirection); // se calcula la dirección real
+        if (!dead) {                                                            // si no murio el jugador
+            Directions direction = actualDirection(preferredDirection);         // se calcula la dirección real
 
             if (direction != preferredDirection) {
-                logPlayerNoOrders(); // si difiere lo antoa en el log
+                logPlayerNoOrders();                                            // si difiere lo anota en el log
             }
 
-            Monster monster = labyrinth.putPlayer(direction, currentPlayer); // mueve al jugador
+            Monster monster = labyrinth.putPlayer(direction, currentPlayer);    // mueve al jugador y devuelve al monstruo en esa direccion
 
-            if (monster == null) { // si no hay monstruo
-                logNoMonster();
+            if (monster == null) {                                              // si no hay monstruo
+                logNoMonster();                                                 // registramos q se pudo mover sin monstruo
             } else {
-                GameCharacter winner = combat(monster); // si lo hay, se produce un combate
-                manageReward(winner); // se reparten recompensas
+                GameCharacter winner = combat(monster);                         // si lo hay, se produce un combate
+                manageReward(winner);                                           // se reparten recompensas
             }
         } else {
-            manageResurrection(); // si está muerto, se intenta resucitar
+            manageResurrection();                                               // si está muerto, se intenta resucitar
         }
 
-        boolean endGame = finished(); 
+        boolean endGame = finished();                                           // vemos si ha terminado el juego
 
-        if (!endGame) {
-            nextPlayer(); // si terminó, se pasa al siguiente turno
+        if (!endGame) {                                                         // Si no ha terminado el juego 
+            nextPlayer();                                                       // se pasa al siguiente turno
         }
 
-        return endGame;
+        return endGame;                                                         // devolvemos si ha terminado el juego
     }
 
     public GameState getGameState(){
         String labyrinthStr = labyrinth.toString();
-        StringBuilder playersStr = new StringBuilder();
+        StringBuilder playersStr = new StringBuilder();                         // Construimos un string con los toString de los jugadores
         for (Player player : players) {
             playersStr.append(player);
         }
 
-        StringBuilder monstersStr = new StringBuilder();
+        /**
+         * String playersStr = "";
+         * for (Player player : players) {
+         *      playersStr += player + " "
+         * }
+         */
+
+        StringBuilder monstersStr = new StringBuilder();                        // Construimos un string con los toString de los monstruos
         for (Monster monster : monsters) {
             monstersStr.append(monster);
         }
@@ -122,8 +129,8 @@ public class Game {
         labyrinth.addBlock(Orientation.VERTICAL , 1 , 1 , 2 );
         labyrinth.addBlock(Orientation.HORIZONTAL , 3 , 2 , 2 );
 
-        int[] pos1 = labyrinth.randomEmptyPos(); // creamos un vector int para randomizar la posicion del monstruo
-        Monster m1 = new Monster("Adri", Dice.randomIntelligence(), Dice.randomStrength() ); // se crea el monstruo 1
+        int[] pos1 = labyrinth.randomEmptyPos();                                                       // creamos un vector int para randomizar la posicion del monstruo
+        Monster m1 = new Monster("Adri", Dice.randomIntelligence(), Dice.randomStrength() );    // se crea el monstruo 1
         labyrinth.addMonster(pos1[0], pos1[1], m1); // se añade el monstruo al laberinto 
         monsters.add(m1);
         
@@ -165,51 +172,49 @@ public class Game {
         return output;
     }
 
-    private GameCharacter combat(Monster monster){
-        int rounds = 0; 
-        GameCharacter winner = GameCharacter.PLAYER; 
+    private GameCharacter combat(Monster monster){              // combate contra monster, devuelve un tipo de personaje
+        int rounds = 0;                                         // inicializamos las rondas de combate a 0
+        GameCharacter winner = GameCharacter.PLAYER;            // empezara ganando el jugador
 
-        float playerAttack = currentPlayer.attack(); // el jugador ataca primero
+        // turno del jugador
+        float playerAttack = currentPlayer.attack();            // jugador ataca 
+        boolean lose = monster.defend(playerAttack);            // el monstruo se defiende, devuelve true si muere con ese golpe
 
-        boolean lose = monster.defend(playerAttack); // esta variable significa que "el que acaba de defenderse ha perdido" (es usado en ambos bandos)
+        while (!lose && (rounds < MAX_ROUNDS)) {                // mientras nadie haya perdido y no se hayan agotado las rondas
+            // turno del monstruo
+            winner = GameCharacter.MONSTER;                     // la victoria pasa a monster
+            rounds++;                                           // incremento ronda
+            float monsterAttack = monster.attack();             // ataque monstruo
+            lose = currentPlayer.defend(monsterAttack);         // defensa del jugador. Si el jugador no logra defenderse true
 
-        while (!lose && (rounds < MAX_ROUNDS)) { // mientras que el monstruo no haya perdido y no se haya llegado al máximo de rondas 
-            winner = GameCharacter.MONSTER; // primeramente se pone al monstruo como ganador al atacar primero
-            rounds++; // incremento ronda
-
-            float monsterAttack = monster.attack(); // ataque monstruo
-
-            lose = currentPlayer.defend(monsterAttack); // defensa del jugador
-
-            if (!lose) {
-            playerAttack = currentPlayer.attack(); // ataque jugador
-            winner = GameCharacter.PLAYER; // se le da la victoria al jugador
-            lose = monster.defend(playerAttack); // defensa del monstruo
+            if (!lose) {                                        // si el jugador ha logrado defenderse
+            // turno del jugador
+            playerAttack = currentPlayer.attack();              // ataque jugador
+            winner = GameCharacter.PLAYER;                      // se le da la victoria al jugador
+            lose = monster.defend(playerAttack);                // defensa del monstruo. Si el monsturo muere, lose es true
             }
         }
-
-        logRounds(rounds, MAX_ROUNDS); // si se han alcanzado el maximo de rondas y no hay ganador, gana el player automaticamente
-
+        logRounds(rounds, MAX_ROUNDS);                          // si se han alcanzado el maximo de rondas y no hay ganador, gana el player automaticamente
         return winner;
     }
 
     private void manageReward(GameCharacter winner){
-        if (winner == GameCharacter.PLAYER) { // si el ganador ha sido el player
-            currentPlayer.receiveReward(); // se le da una recompensa al jugador
-            logPlayerWon(); // ganó el jugador
+        if (winner == GameCharacter.PLAYER) {       // si el ganador ha sido el player
+            currentPlayer.receiveReward();          // se le da una recompensa al jugador
+            logPlayerWon();                         // registramos la victoria del jugador
         } else {
-            logMonsterWon(); // ganó el monstruo
+            logMonsterWon();                        // registramos la victoria del monstruo
         }
     }
 
     private void manageResurrection(){
         boolean resurrect = Dice.resurrectPlayer(); // se pregunta al dado si el jugador revive
 
-        if (resurrect) { // si sí 
-            currentPlayer.resurrect(); // revive el jugador
-            logResurrected();
-        } else { // si no
-            logPlayerSkipTurn(); // se pasa el turno
+        if (resurrect) {                            // si sí 
+            currentPlayer.resurrect();              // revive el jugador
+            logResurrected();                       // registramos revivir
+        } else {                                    // si no
+            logPlayerSkipTurn();                    // se pasa el turno
         }
     }
 

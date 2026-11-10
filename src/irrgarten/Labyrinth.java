@@ -101,11 +101,11 @@ public class Labyrinth {
         int row = startRow;
         int col = startCol;
 
-        while (posOK(row,col) && (emptyPos(row, col)) && (length > 0)) { // mientras se cumplan estas condiciones, se seguira creando el mapa
-            labyrinth[row][col] = BLOCK_CHAR;
+        while (posOK(row,col) && (emptyPos(row, col)) && (length > 0)) { // mientras que la casilla de inicio sea correcta y vacia, y la longitud del bloque sea mayor que 0
+            labyrinth[row][col] = BLOCK_CHAR;                            // colocamos el bloque
 
-            length -= 1;
-            row += incRow;
+            length -= 1;                                                 // disminuimos el tamaño restante del bloque
+            row += incRow;                                               // nos movemos en la direccion necesaria
             col += incCol;
         }
     }
@@ -161,11 +161,11 @@ public class Labyrinth {
     }
 
     private void updateOldPos(int row, int col) {
-        if (posOK(row, col)) { // si la posición esta en el tablero
-            if (combatPos(row, col)) { // si hay un combate
-                labyrinth[row][col] = MONSTER_CHAR; // pasa a indicar que hay un mosntruo
-            } else {
-                labyrinth[row][col] = EMPTY_CHAR; // pasa a indicar que está vacia
+        if (posOK(row, col)) {                          // si la posición esta en el tablero
+            if (combatPos(row, col)) {                  // si habia un combate
+                labyrinth[row][col] = MONSTER_CHAR;     // pasa a indicar que hay un mosntruo
+            } else {                                    // si solo estaba el jugador
+                labyrinth[row][col] = EMPTY_CHAR;       // pasa a indicar que queda vacia
             }
         }
     }
@@ -211,30 +211,30 @@ public class Labyrinth {
     }
 
     Monster putPlayer2D(int oldRow, int oldCol, int row, int col, Player player) {
-        Monster output = null; // si no se puede pisar el destino, se devuelve null
+        Monster output = null;                              // suponemos que en la direccion final no habra un monstruo
 
-        if (canStepOn(row, col)) { // se limpia la casilla vieja si
-            if (posOK(oldRow, oldCol)) { // si existe
-                Player p = players[oldRow][oldCol]; // realmente contiene a ese jugador
-
-                if (p == player) {
-                    updateOldPos(oldRow, oldCol);
-                    players[oldRow][oldCol] = null;
+        if (canStepOn(row, col)) {                          // si puede colocarse en la posicion nueva
+            if (posOK(oldRow, oldCol)) {                    // si existia la posicion de origen
+                Player p = players[oldRow][oldCol];         // obtenemos al jugador que habia en la casilla vieja
+                
+                if (p == player) {                          // si es el jugador que le pasamos
+                    updateOldPos(oldRow, oldCol);           // actualizamos la posicion antigua
+                    players[oldRow][oldCol] = null;         // eliminamos el jugador en la posicion antigua
                 }
             }
         
-            boolean monster_pos = monsterPos(row, col);
+            boolean monster_pos = monsterPos(row, col);     // comprobamos si hay un monstruo en la posicion nueva
 
-            if (monster_pos) { // si hay monstruos
-                labyrinth[row][col] = COMBAT_CHAR; // se pasa a combate
-                output = monsters[row][col]; // devuelve al monstruo
-            } else {
-                labyrinth[row][col] = player.getNumber(); // se escribe el numero dek jugador
+            if (monster_pos) {                              // si hay monstruo
+                labyrinth[row][col] = COMBAT_CHAR;          // se pasa a combate
+                output = monsters[row][col];                // devuelve al monstruo en la posicion nueva
+            } else {                                        // si no hay monstruo
+                labyrinth[row][col] = player.getNumber();   // se escribe el numero del jugador en el mapa
             }
 
-            players[row][col] = player;
-            player.setPos(row, col);
-        }
+            players[row][col] = player;                     // colocamos al jugador en la posicion nueva
+            player.setPos(row, col);                        // le damos al jugador su posicion
+        }   
 
         return output;
     }

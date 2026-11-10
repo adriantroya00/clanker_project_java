@@ -21,7 +21,7 @@ public class Monster {
         this.col = NO_POS;  
     }
 
-    public boolean dead() { // función muerte
+    public boolean dead() { // comprobamos si ha muerto
         return(this.health <= 0.0f);
     }
 
@@ -30,10 +30,10 @@ public class Monster {
     }
 
     public boolean defend(float receivedAttack){
-        boolean isDead = this.dead(); // si ya esta muerto, no se defiende y devuelve true
+        boolean isDead = this.dead();                               // comprobamos si el monstruo esta muerto
 
-        if (!isDead) { // si sigue vivo
-            float defensiveEnergy = Dice.intensity(intelligence); // se calcula su energía defensiva entre [0, inteligencia)
+        if (!isDead) {                                              // si sigue vivo
+            float defensiveEnergy = Dice.intensity(intelligence);   // se calcula su energía defensiva entre [0, inteligencia)
 
             if (defensiveEnergy < receivedAttack) { // si esa defensa no alcanza al ataque recibido
                 gotWounded(); // recibe una herida
